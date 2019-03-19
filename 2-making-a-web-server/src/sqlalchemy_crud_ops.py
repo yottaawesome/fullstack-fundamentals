@@ -19,12 +19,12 @@ We created a new Restaurant and called it Pizza Palace:
 
 myFirstRestaurant = Restaurant(name = "Pizza Palace")
 session.add(myFirstRestaurant)
-sesssion.commit()
+session.commit()
 
 '''
 We created a cheese pizza menu item and added it to the Pizza Palace Menu:
 '''
-cheesepizza = menuItem(name="Cheese Pizza", description = "Made with all natural ingredients and fresh mozzarella", course="Entree", price="$8.99", restaurant=myFirstRestaurant)
+cheesepizza = MenuItem(name="Cheese Pizza", description = "Made with all natural ingredients and fresh mozzarella", course="Entree", price="$8.99", restaurant=myFirstRestaurant)
 session.add(cheesepizza)
 session.commit()
 
