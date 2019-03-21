@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Restaurant App</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+
+    <body>
+        <h1>New menu item</h1>
+
+        <form action="{{ url_for('new_menu_item', restaurant_id=restaurant_id) }}" method="POST">
+            <label for="name">Name:</label>
+            <input name="name" placeholder="Name" type="text" size="80">
+
+            <label for="description">Description:</label>
+            <input name="description" placeholder="Description" type="text" size="250">
+
+            <label for="price">Price:</label>
+            <input name="price" placeholder="Price ($)" type="text" size="8">
+
+            <label for="course">Course:</label>
+            <input name="course" placeholder="Course" type="text" size="250">
+
+            <div>
+                <input type="Submit" value="Create"> <a href="{{ url_for('restaurant_menu', restaurant_id=restaurant_id) }}">Cancel</a>
+            </div>
+        </form>
+    </body>
+</html>
