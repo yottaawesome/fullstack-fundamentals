@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>Restaurant App</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    </head>
+
+    <body>
+        <h1>Restaurants</h1>
+
+        {% for r in restaurants %}
+        <div>
+            <p>{{r.name}}</p>
+            <p>{{r.description}}</p>
+            <p> {{r.price}} </p>
+            <a href="{{ url_for('restaurant_menu', restaurant_id=r.id) }}">view menu</a>
+        </div>
+        {% endfor %}
+    </body>
+</html>
