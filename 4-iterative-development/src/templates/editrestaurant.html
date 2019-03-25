@@ -6,6 +6,26 @@
     </head>
     
     <body>
+        <h1>Edit Restaurant {{ restaurant.name }}</h1>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+        {% for msg in messages %}
+            <li><strong>{{ msg }}</strong></li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('edit_restaurant', restaurant_id=restaurant.id) }}" method="POST">
+            <label for="name">Name:</label>
+            <input name="name" placeholder="Name" value="{{ restaurant.name }}" type="text" size="80" required>
+
+            <div>
+                <input type="Submit" value="Submit"> <a href="{{ url_for('restaurants') }}">Cancel</a>
+            </div>
+        </form>
 
     </body>
 </html>

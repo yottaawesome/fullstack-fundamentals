@@ -6,6 +6,25 @@
     </head>
     
     <body>
+        <h1>Create new Restaurant</h1>
 
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+        {% for msg in messages %}
+            <li><strong>{{ msg }}</strong></li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('new_restaurant') }}" method="POST">
+            <label for="name">Name:</label>
+            <input name="name" placeholder="Name" type="text" size="80">
+
+            <div>
+                <input type="Submit" value="Create"> <a href="{{ url_for('restaurants') }}">Cancel</a>
+            </div>
+        </form>
     </body>
 </html>

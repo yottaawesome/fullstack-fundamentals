@@ -76,6 +76,93 @@ def JSON_restaurant_menu_item(restaurant_id, menu_id):
         if session:
             session.close()
 
+
+@app.route("/restaurant/new/", methods=["GET", "POST"])
+def new_restaurant():
+    try:
+        session = None
+        if request.method == "GET":
+            return render_template("newrestaurant.html")
+
+        if request.method == "POST":
+            name = request.form["name"]
+            if not name or not name.strip():
+                flash("Name is required!")
+                return render_template("newrestaurant.html")            
+            
+            session = DBSession()
+            session.add(Restaurant(name=name.strip()))
+            session.commit()
+
+            flash("Restaurant created successfully!")
+
+            return redirect(url_for("restaurants"))
+
+    finally:
+        if session:
+            session.close()
+
+@app.route("/restaurant/<int:restaurant_id>/edit/", methods=["GET", "POST"])
+def edit_restaurant(restaurant_id):
+
+    try:
+        session = DBSession()
+        restaurant = session \
+            .query(Restaurant) \
+            .filter_by(id=restaurant_id) \
+            .one()
+
+        if not restaurant:
+            return render_template("404.html"), 404
+
+        if request.method == "GET":
+            return render_template("editrestaurant.html", restaurant=restaurant)
+
+        if request.method == "POST":
+            name = request.form["name"]
+            if not name or not name.strip():
+                flash("Name is required!")
+                return render_template("editrestaurant.html", restaurant=restaurant)            
+            
+            restaurant.name = name.strip()
+            session.add(restaurant)
+            session.commit()
+
+            flash("Restaurant edited successfully!")
+
+        return redirect(url_for("restaurant_menu", restaurant_id=restaurant_id))
+
+    finally:
+        if session:
+            session.close()
+
+@app.route("/restaurant/<int:restaurant_id>/delete/", methods=["GET", "POST"])
+def delete_restaurant(restaurant_id):
+    try:
+        session = DBSession()
+        restaurant = session \
+            .query(Restaurant) \
+            .filter_by(id=restaurant_id) \
+            .one()
+
+        if not restaurant:
+            return render_template("404.html"), 404
+
+        if request.method == "GET":
+            return render_template("deleterestaurant.html", restaurant=restaurant)
+
+        if request.method == "POST":            
+            session.delete(restaurant)
+            session.commit()
+
+            flash("Restaurant deleted successfully!")
+
+        return redirect(url_for("restaurants"))
+
+    finally:
+        if session:
+            session.close()
+
 # Task 1: Create route for newMenuItem function here
 @app.route("/restaurant/<int:restaurant_id>/new/", methods=["GET", "POST"])
 def new_menu_item(restaurant_id):
@@ -92,7 +179,12 @@ def new_menu_item(restaurant_id):
             return render_template("newmenuitem.html", restaurant_id=restaurant_id)
 
         if request.method == "POST":
-            new_item = MenuItem(name=request.form["name"], course=request.form["course"], description=request.form["description"], price=request.form["price"], restaurant_id=restaurant_id)
+            item_name = request.form["name"]
+            if not item_name or not item_name.strip():
+                flash("Menu item name is required!")
+                return render_template("newmenuitem.html", restaurant_id=restaurant_id)
+
+            new_item = MenuItem(name=item_name, course=request.form["course"], description=request.form["description"], price=request.form["price"], restaurant_id=restaurant_id)
             session.add(new_item)
             session.commit()
 
@@ -113,8 +205,14 @@ def edit_menu_item(restaurant_id, menu_id):
 
         session = DBSession()
 
-        restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-        menu_item = session.query(MenuItem).filter_by(id=menu_id, restaurant_id=restaurant_id).one()
+        restaurant = session \
+            .query(Restaurant) \
+            .filter_by(id=restaurant_id) \
+            .one()
+        menu_item = session \
+            .query(MenuItem) \
+            .filter_by(id=menu_id, restaurant_id=restaurant_id) \
+            .one()
 
         if restaurant is None or menu_item is None:
             return render_template("404.html"), 404
@@ -123,7 +221,12 @@ def edit_menu_item(restaurant_id, menu_id):
             return render_template("editmenuitem.html", restaurant_id=restaurant_id, item=menu_item)
 
         if request.method == "POST":
-            menu_item.name = request.form["name"]
+            item_name = request.form["name"]
+            if not item_name or not item_name.strip():
+                flash("Menu item name is required!")
+                return render_template("editmenuitem.html", restaurant_id=restaurant_id, item=menu_item)
+
+            menu_item.name = item_name
             menu_item.course = request.form["course"]
             menu_item.description = request.form["description"]
             menu_item.price = request.form["price"]
@@ -148,8 +251,14 @@ def delete_menu_item(restaurant_id, menu_id):
 
         session = DBSession()
 
-        restaurant = session.query(Restaurant).filter_by(id=restaurant_id).one()
-        menu_item = session.query(MenuItem).filter_by(id=menu_id, restaurant_id=restaurant_id).one()
+        restaurant = session \
+            .query(Restaurant) \
+            .filter_by(id=restaurant_id) \
+            .one()
+        menu_item = session \
+            .query(MenuItem) \
+            .filter_by(id=menu_id, restaurant_id=restaurant_id) \
+            .one()
 
         if restaurant is None or menu_item is None:
             return render_template("404.html"), 404
