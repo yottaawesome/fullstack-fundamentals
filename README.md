@@ -3,8 +3,8 @@
 ## What is it?
 This is my repository containing my exercise code from Udacity's Full Stack Foundations course (https://www.udacity.com/course/full-stack-foundations--ud088). My solution code differs from Udacity's solutions code (https://github.com/udacity/Full-Stack-Foundations/) due to me using Python 3.6.7 instead of Python 2x.
 
-##  Are all modules complete?
-Yes, but I will likely do continued minor updates to improve the aesthetics and code structure as time goes on.
+## Status
+_Complete._ Only maintenance updates now.
 
 ## How do I use it?
 Each module is divided into its own folder. To initially set up a module, do the following:
